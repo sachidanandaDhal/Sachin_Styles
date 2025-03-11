@@ -2,7 +2,9 @@ package main
 
 import (
 	"backend/database"
+	"backend/middleware"
 	"backend/routes"
+	"net/http"
 
 	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
@@ -23,6 +25,14 @@ func main() {
 
 	r.POST("/register", routes.Register)
 	r.POST("/login", routes.Login)
+	r.GET("/admin-info", middleware.AuthMiddleware("admin"), func(c *gin.Context) {
+		username, _ := c.Get("username")
+		c.JSON(http.StatusOK, gin.H{"name": username})
+	})
+
+	r.GET("/products", routes.GetProducts)
+	r.POST("/products", middleware.AuthMiddleware("admin"), routes.CreateProduct)       // ✅ Only admins
+	r.DELETE("/products/:id", middleware.AuthMiddleware("admin"), routes.DeleteProduct) // ✅ Only admins
 
 	r.Run(":8080")
 }

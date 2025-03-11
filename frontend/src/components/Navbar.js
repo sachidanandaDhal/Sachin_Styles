@@ -10,9 +10,9 @@ const Navbar = () => {
   };
 
   return (
-    <nav className="bg-white shadow-md p-4 flex justify-between items-center">
+    <nav className="bg-white shadow-md p-2 flex justify-between items-center">
       {/* Logo */}
-      <h1 className="text-2xl font-bold text-blue-600">E-Commerce</h1>
+      <h1 className="text-2xl font-bold text-blue-600">Sachin Styles</h1>
 
       {/* Navigation Links */}
       <div className="flex gap-4">

@@ -32,11 +32,11 @@ func checkPassword(providedPassword, storedPassword string) bool {
 // Generate JWT Token
 func generateToken(user models.User) (string, error) {
 	claims := jwt.MapClaims{
-		"id":    user.ID.Hex(),
-		"email": user.Email,
+		"id":           user.ID.Hex(),
+		"email":        user.Email,
 		"mobileNumber": user.MobileNumber,
-		"role":  user.Role,
-		"exp":   time.Now().Add(time.Hour * 24).Unix(), // Token expires in 24 hours
+		"role":         user.Role,
+		"exp":          time.Now().Add(time.Hour * 24).Unix(), // Token expires in 24 hours
 	}
 
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
@@ -46,10 +46,10 @@ func generateToken(user models.User) (string, error) {
 // 📌 Register User API
 func Register(c *gin.Context) {
 	var input struct {
-		Username string `json:"username" binding:"required"`
+		Username     string `json:"username" binding:"required"`
 		MobileNumber string `json:"mobileNumber" binding:"required"`
-		Email    string `json:"email" binding:"required"`
-		Password string `json:"password" binding:"required"`
+		Email        string `json:"email" binding:"required"`
+		Password     string `json:"password" binding:"required"`
 	}
 
 	// Parse request JSON
@@ -70,12 +70,12 @@ func Register(c *gin.Context) {
 
 	// Create user object
 	user := models.User{
-		ID:       primitive.NewObjectID(),
+		ID:           primitive.NewObjectID(),
 		Username:     input.Username,
 		MobileNumber: input.MobileNumber,
-		Email:    input.Email,
-		Password: hashedPassword,
-		Role:     "user", // Default role is "user"
+		Email:        input.Email,
+		Password:     hashedPassword,
+		Role:         "user", // Default role is "user"
 	}
 
 	// Insert into MongoDB
@@ -121,5 +121,5 @@ func Login(c *gin.Context) {
 	// Generate JWT token
 	token, _ := generateToken(user)
 
-	c.JSON(http.StatusOK, gin.H{"message": "Login successful", "token": token})
+	c.JSON(http.StatusOK, gin.H{"message": "Login successful", "token": token, "role": user.Role})
 }

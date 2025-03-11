@@ -26,8 +26,15 @@ const Login = () => {
       const data = await response.json();
       if (response.ok) {
         localStorage.setItem("token", data.token);
+        localStorage.setItem("role", data.role);
         alert("Login successful!");
-        navigate("/");
+        if (data.role === "user") {
+          navigate("/products");
+        } else if (data.role === "admin") {
+          navigate("/admin-dashboard");
+        } else if (data.role === "superadmin") {
+          navigate("/super-dashboard");
+        }
       } else {
         setError(data.error || "Invalid email or password.");
       }

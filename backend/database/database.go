@@ -5,13 +5,12 @@ import (
 	"fmt"
 	"log"
 
-	// "time"
-
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"
 )
 
 var UserCollection *mongo.Collection
+var ProductCollection *mongo.Collection
 
 func ConnectDatabase() {
 	clientOptions := options.Client().ApplyURI("mongodb://localhost:27017")
@@ -28,4 +27,5 @@ func ConnectDatabase() {
 
 	fmt.Println("Connected to MongoDB!")
 	UserCollection = client.Database("ecommerce").Collection("users")
+	ProductCollection = client.Database("ecommerce").Collection("products") // ✅ Ensure products collection exists
 }
